@@ -15,7 +15,7 @@ describe('Loader', ()=>{
   const REFERENCES = require('./configs/references.json');
 
   it('loads a basic javascript config file', (done)=>{
-    const l = new ConfigLoader('./configs/basic.js', {
+    const l = new ConfigLoader('./configs/basic.js', {}, {
       basePath: __dirname
     });
     expect(l.config).to.equal(BASIC);
@@ -23,7 +23,7 @@ describe('Loader', ()=>{
   });
 
   it('loads a basic yaml config file', (done)=>{
-    const l = new ConfigLoader('./configs/basic.yaml', {
+    const l = new ConfigLoader('./configs/basic.yaml', {}, {
       basePath: __dirname
     });
     expect(l.config).to.equal(BASIC);
@@ -31,7 +31,7 @@ describe('Loader', ()=>{
   });
 
   it('loads a basic JSON config file', (done)=>{
-    const l = new ConfigLoader('./configs/basic.json', {
+    const l = new ConfigLoader('./configs/basic.json', {}, {
       basePath: __dirname
     });
     expect(l.config).to.equal(BASIC);
@@ -39,7 +39,7 @@ describe('Loader', ()=>{
   });
 
   it('gets a top level value', (done)=>{
-    const l = new ConfigLoader('./configs/basic.js', {
+    const l = new ConfigLoader('./configs/basic.js', {}, {
       basePath: __dirname
     });
     const val = l.get('test');
@@ -48,7 +48,7 @@ describe('Loader', ()=>{
   });
 
   it('gets a child value', (done)=>{
-    const l = new ConfigLoader('./configs/basic.js', {
+    const l = new ConfigLoader('./configs/basic.js', {}, {
       basePath: __dirname
     });
     const val = l.get('child.key');
@@ -57,7 +57,7 @@ describe('Loader', ()=>{
   });
 
   it('mapps references to values for JSON', (done)=>{
-    const l = new ConfigLoader('./configs/references.json', {
+    const l = new ConfigLoader('./configs/references.json', {}, {
       basePath: __dirname
     });
     const val = l.get('config.test');
@@ -70,7 +70,7 @@ describe('Loader', ()=>{
   });
 
   it('mapps references to values for YAML', (done)=>{
-    const l = new ConfigLoader('./configs/references.json', {
+    const l = new ConfigLoader('./configs/references.json', {}, {
       basePath: __dirname
     });
     const val = l.get('config.test');
@@ -79,6 +79,52 @@ describe('Loader', ()=>{
     expect(childKey).to.be.a.string().and.to.equal(REFERENCES.globals.child.key.value);
     const child = l.get('config.child');
     expect(child).to.be.an.object().and.to.equal(REFERENCES.globals.child);
+    done();
+  });
+
+  it('mapps global references to values for JSON', (done)=>{
+    const config = {
+        globals: {
+          test: 'some',
+          child: {
+            key: {
+              value: 'more'
+            }
+          }
+        },
+      };
+    const l = new ConfigLoader('./configs/references.json', config, {
+      basePath: __dirname
+    });
+    const val = l.get('config.test');
+    expect(val).to.be.a.string().and.to.equal(config.globals.test);
+    const childKey = l.get('config.childKey');
+    expect(childKey).to.be.a.string().and.to.equal(config.globals.child.key.value);
+    const child = l.get('config.child');
+    expect(child).to.be.an.object().and.to.equal(config.globals.child);
+    done();
+  });
+
+  it('mapps global references to values for YAML', (done)=>{
+    const config = {
+        globals: {
+          test: 'some',
+          child: {
+            key: {
+              value: 'more'
+            }
+          }
+        },
+      };
+    const l = new ConfigLoader('./configs/references.yaml', config, {
+      basePath: __dirname
+    });
+    const val = l.get('config.test');
+    expect(val).to.be.a.string().and.to.equal(config.globals.test);
+    const childKey = l.get('config.childKey');
+    expect(childKey).to.be.a.string().and.to.equal(config.globals.child.key.value);
+    const child = l.get('config.child');
+    expect(child).to.be.an.object().and.to.equal(config.globals.child);
     done();
   });
 });
