@@ -1,0 +1,9 @@
+globals:
+  test: value
+  child:
+    key:
+      value: test
+config:
+  test: ${globals.test}
+  childKey: ${globals.child.key.value}
+  child: ${globals.child}

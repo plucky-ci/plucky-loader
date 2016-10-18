@@ -1,0 +1,6 @@
+{
+  foo: bar,
+  bar: none,
+  obj: {
+    some: value,
+    number: 123
