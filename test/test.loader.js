@@ -38,6 +38,15 @@ describe('Loader', ()=>{
     done();
   });
 
+  it('works with a .plucky file', (done)=>{
+    const l = new ConfigLoader('./configs/.plucky', {}, {
+      basePath: __dirname
+    });
+    const shouldEqual = { test: 'value', child: { key: 'value' } };
+    expect(l.config).to.equal(shouldEqual);
+    done();
+  });
+
   it('gets a top level value', (done)=>{
     const l = new ConfigLoader('./configs/basic.js', {}, {
       basePath: __dirname

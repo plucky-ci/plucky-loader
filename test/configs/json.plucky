@@ -1,0 +1,6 @@
+{
+  "test": 'value',
+  child: {
+    "key": "value"
+  }
+}
