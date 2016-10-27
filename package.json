@@ -23,6 +23,6 @@
   "dependencies": {
     "js-yaml": "3.6.1",
     "nasty-json": "0.0.1",
-    "plucky-mapper": "0.0.5"
+    "plucky-mapper": "0.0.6"
   }
 }
